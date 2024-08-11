@@ -17,9 +17,9 @@
     },
     "exclude": [
     "node_modules",
-    "jest.config.js",
-    "webpack.config.js",
+    "*.config.js",
     "src/tests/**/*",
-    "dist/**/*"
+    "dist/**/*",
+    "src/temp*.js"
   ]
 }
