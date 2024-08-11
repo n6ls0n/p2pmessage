@@ -21,7 +21,8 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                include: path.resolve(__dirname),
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
         ],
         noParse: [/jest\.config\.js/],
@@ -31,22 +32,23 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html', // Update the template path to src/index.html
+            template: './src/index.html', // Update the template path to src/index.html
         }),
     ],
     devServer: {
         static: {
             directory: path.join(__dirname, 'dist'),
+            publicPath: './',
         },
         hot: true,
         host: 'localhost',
-        server: {
-            type: 'https',
-            options: {
-                key: fs.readFileSync('./localhost-key.pem'),
-                cert: fs.readFileSync('./localhost.pem'),
-                },
-        },
+        // server: {
+        //     type: 'https',
+        //     options: {
+        //         key: fs.readFileSync('./localhost-key.pem'),
+        //         cert: fs.readFileSync('./localhost.pem'),
+        //         },
+        // },
         port: 8080,
     },
 };
