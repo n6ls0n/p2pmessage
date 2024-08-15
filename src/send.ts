@@ -38,8 +38,8 @@ export function s_initialize(peer: Peer, status: HTMLElement) {
     });
 };
 
-// //  Create the connection between the two Peers.
-// //  Sets up callbacks that handle any events related to the connection and data received on it.
+//  Create the connection between the two Peers.
+//  Sets up callbacks that handle any events related to the connection and data received on it.
 export function s_join(peer: Peer, recvIdInput: HTMLInputElement, status: HTMLElement, message: HTMLElement, conn: DataConnection) {
     // TODO: Add code to handle case where a connection to a peer already exists and a new connection needs to be made then remove the code below
     // Close old connection
