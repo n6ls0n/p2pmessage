@@ -1,6 +1,6 @@
 import { Peer, DataConnection } from "peerjs";
 import './style.css';
-import { signal, initialize, join, addMessage, clearMessages } from "./send";
+import { s_signal, s_initialize, s_join, s_addMessage, s_clearMessages } from "./send";
 
 // ######################## Send ########################
 
@@ -21,34 +21,34 @@ var send_connectButton = document.getElementById("send_connect-button") as HTMLE
 
 // Initialize peer
 if (send_status)
-{initialize(send_peer, send_status);}
+{s_initialize(send_peer, send_status);}
 
 // #### Send Callback Setup ####
 // Start peer connection on click
 if (send_connectButton && send_recvIdInput && send_status && send_message)
-{send_connectButton.addEventListener('click', () => join(send_peer, send_recvIdInput,send_status, send_message, send_conn));}
+{send_connectButton.addEventListener('click', () => s_join(send_peer, send_recvIdInput,send_status, send_message, send_conn));}
 
 // Add click event listener for send_goButton
 send_goButton.addEventListener('click', function () {
-    signal("Go", send_message, send_conn);
+    s_signal("Go", send_message, send_conn);
 });
 
 
 // Add click event listener for send_resetButton
 send_resetButton.addEventListener('click', function () {
-    signal("Reset", send_message, send_conn);
+    s_signal("Reset", send_message, send_conn);
 });
 
 
 // Add click event listener for send_fadeButton
 send_fadeButton.addEventListener('click', function () {
-    signal("Fade", send_message, send_conn);
+    s_signal("Fade", send_message, send_conn);
 });
 
 
 // Add click event listener for send_offButton
 send_offButton.addEventListener('click', function () {
-    signal("Off", send_message, send_conn);
+    s_signal("Off", send_message, send_conn);
 });
 
 
@@ -68,14 +68,14 @@ send_sendButton.addEventListener('click', function () {
         send_sendMessageBox.value = "";
         send_conn.send(msg);
         console.log("Sent: " + msg);
-        addMessage("<span class=\"selfMsg\">Self: </span> " + msg, send_message);
+        s_addMessage("<span class=\"selfMsg\">Self: </span> " + msg, send_message);
     } else {
         console.log('Connection is closed');
     }
 });
 
 // Add click event listener for send_clearMsgsButton
-send_clearMsgsButton.addEventListener('click', () => clearMessages(send_message));
+send_clearMsgsButton.addEventListener('click', () => s_clearMessages(send_message));
 
 
 // ######################## Receive  ########################
