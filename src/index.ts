@@ -80,7 +80,6 @@ send_clearMsgsButton.addEventListener('click', () => s_clearMessages(send_messag
 
 
 // ######################## Receive ########################
-var recv_peer: Peer;// Own peer object
 var recv_conn: DataConnection;
 var recv_recvId = document.getElementById("receiver-id") as HTMLElement;
 var recv_status = document.getElementById("status") as HTMLElement;
@@ -115,5 +114,5 @@ recv_sendButton.addEventListener('click', function () {
 // Clear messages box
 recv_clearMsgsButton.addEventListener('click', () =>s_clearMessages(recv_message));
 
-recv_peer = new Peer();
+var recv_peer = new Peer();
 r_initialize(recv_peer, recv_recvId, recv_status, recv_message, recv_standbyBox, recv_goBox, recv_fadeBox, recv_offBox);
