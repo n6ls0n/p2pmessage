@@ -40,15 +40,15 @@ export function initialize(peer: Peer, status: HTMLElement) {
 
 // //  Create the connection between the two Peers.
 // //  Sets up callbacks that handle any events related to the connection and data received on it.
-export function join(peer: Peer, recvIdInput: HTMLInputElement, status: HTMLElement, message: HTMLElement) {
+export function join(peer: Peer, recvIdInput: HTMLInputElement, status: HTMLElement, message: HTMLElement, conn: DataConnection) {
     // TODO: Add code to handle case where a connection to a peer already exists and a new connection needs to be made then remove the code below
     // Close old connection
-    // if (conn) {
-    //     conn.close();
-    // }
+    if (conn) {
+        conn.close();
+    }
 
     // Create connection to destination peer specified in the input field
-    var conn: DataConnection = peer.connect(recvIdInput.value, {
+    conn = peer.connect(recvIdInput.value, {
         reliable: true
     });
 
