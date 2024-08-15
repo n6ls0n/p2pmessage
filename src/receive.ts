@@ -3,7 +3,9 @@ import { s_addMessage } from "./send";
 // Note: All args of type HTMLElement are global variables defined within index.ts. The observant reader should infer this based on the fact that there are no return values.
 
 // Create the Peer object for our end of the connection.
-export function r_initialize(peer: Peer, recvId: HTMLElement, conn: DataConnection, status: HTMLElement, message: HTMLElement, goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement) {
+export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElement, message: HTMLElement, goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement) {
+    var conn: DataConnection;
+    
     peer.on('open', function () {
         // Workaround for peer.reconnect deleting previous id
         // if (peer.id === null) {
