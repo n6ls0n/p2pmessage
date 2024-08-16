@@ -6,11 +6,14 @@
         <title>Peer-to-Peer Cue System</title>
         <link rel="stylesheet" type ="text/css" href="style.css">
     </head>
-    <body>
+    <body class="font-serif ui-serif">
+		<h1 class="flex flex-wrap justify-center my-8">Peer-to-Peer Cue System</h1>
+		<div class = "flex flex-wrap space-x-8 justify-center">
 		<!-- Sending Table -->
-		<table class="control">
+		<table class="control table-auto bg-red-500 w-1/3 ">
+			<caption class="border-4 border-blue-500">Sender</caption>
 			<tr>
-				<td class="title">Status:</td>
+				<td class="title ">Status:</td>
 				<td class="title">Messages:</td>
 			</tr>
 			<tr>
@@ -48,8 +51,8 @@
 		</table>
 
 		<!-- Receiving Table -->
-
-		<table class="display">
+		<table class="display table-auto bg-blue-500 w-1/3">
+			<caption>Receiver</caption>
 			<tr>
 				<td class="title">Status:</td>
 				<td class="title">Messages:</td>
@@ -78,7 +81,9 @@
 			</tr>
 		</table>
 
-		<script type="module" src="./index.ts"></script>
+	</div>
+	<script type="module" src="./index.ts"></script>
+
 
     </body>
 </html>

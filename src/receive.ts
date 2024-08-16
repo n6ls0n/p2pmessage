@@ -3,9 +3,8 @@ import { s_addMessage } from "./send";
 // Note: All args of type HTMLElement are global variables defined within index.ts. The observant reader should infer this based on the fact that there are no return values.
 
 // Create the Peer object for our end of the connection.
-export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElement, message: HTMLElement, goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement) {
-    var conn: DataConnection;
-    
+export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElement, message: HTMLElement, goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement, callback:(conn: DataConnection) => void) {
+    let conn: DataConnection | null = null;
     peer.on('open', function () {
         // Workaround for peer.reconnect deleting previous id
         // if (peer.id === null) {
@@ -14,9 +13,10 @@ export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElemen
         // } else {
         //     lastPeerId = peer.id;
         // }
-        console.log('ID: ' + peer.id);
-        recvId.innerHTML = "ID: " + peer.id;
+        console.log('Recv ID: ' + peer.id);
         status.innerHTML = "Awaiting connection...";
+        recvId.innerHTML = "ID: " + peer.id;
+
     });
     peer.on('connection', function (c) {
         // Allow only a single connection
@@ -27,12 +27,14 @@ export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElemen
                 setTimeout(function() { c.close(); }, 500);
             });
             // This return prevents all the code at the bottom from running. T
-            return;
+            return conn;
         }
         conn = c;
-        console.log("Connected to: " + conn.peer);
+        console.log("Receiver Connected to: " + conn.peer);
         status.innerHTML = "Connected";
-        ready(conn, status, message, goBox, fadeBox, standbyBox, offBox);
+        conn = ready(conn, status, message, goBox, fadeBox, standbyBox, offBox);
+        console.log("Receiver Conn Created");
+        callback(conn)
     });
     peer.on('disconnected', function () {
         status.innerHTML = "Connection lost. Please reconnect";
@@ -44,7 +46,7 @@ export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElemen
     });
     peer.on('close', function() {
         // TODO: If this is used within a callback, remember to call peer.destroy
-        conn.close();
+        if(conn){conn.close()};
         status.innerHTML = "Connection destroyed. Please refresh";
         console.log('Connection destroyed');
     });
@@ -52,12 +54,13 @@ export function r_initialize(peer: Peer, recvId: HTMLElement, status: HTMLElemen
         console.log(err);
         alert('' + err);
     });
+    return conn;
 };
 
 //  Triggered once a connection has been achieved.
 //  Defines callbacks to handle incoming data and connection events.
 function ready(conn: DataConnection, status: HTMLElement, message: HTMLElement, goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement) {
-    // TODO: Use and ENUM for the different cases
+    // TODO: Use an ENUM for the different cases
     conn.on('data', function (data) {
         console.log("Data received");
         var cueString = "<span class=\"cueMsg\">Cue: </span>";
@@ -85,8 +88,9 @@ function ready(conn: DataConnection, status: HTMLElement, message: HTMLElement, 
     });
     conn.on('close', function () {
         status.innerHTML = "Connection reset<br>Awaiting connection...";
-        console.log('Connection closed');
+        console.log('Connection closed. Receiver Side');
     });
+    return conn;
 }
 
 function go(goBox: HTMLElement, fadeBox: HTMLElement, standbyBox: HTMLElement, offBox: HTMLElement) {

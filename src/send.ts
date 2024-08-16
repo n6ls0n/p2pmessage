@@ -13,7 +13,7 @@ export function s_initialize(peer: Peer, status: HTMLElement) {
         // } else {
         //     lastPeerId = peer.id;
         // }
-        console.log('ID: ' + peer.id);
+        console.log('Send ID: ' + peer.id);
     });
     peer.on('connection', function (dataConnection) {
         // Disallow incoming connections
@@ -43,19 +43,20 @@ export function s_initialize(peer: Peer, status: HTMLElement) {
 export function s_join(peer: Peer, recvIdInput: HTMLInputElement, status: HTMLElement, message: HTMLElement, conn: DataConnection) {
     // TODO: Add code to handle case where a connection to a peer already exists and a new connection needs to be made then remove the code below
     // Close old connection
-    if (conn) {
-        conn.close();
-    }
+    // if (conn) {
+    //     conn.close();
+    // }
 
     // Create connection to destination peer specified in the input field
     conn = peer.connect(recvIdInput.value, {
         reliable: true
     });
+    console.log("Inside sender join");
 
     // Return status message
     conn.on('open', function () {
         status.innerHTML = "Connected to: " + conn.peer;
-        console.log("Connected to: " + conn.peer);
+        console.log("Sender Connected to: " + conn.peer);
         // Check URL params for commands that should be sent immediately
         var command = s_getUrlParam("command");
         if (command)
@@ -68,10 +69,10 @@ export function s_join(peer: Peer, recvIdInput: HTMLInputElement, status: HTMLEl
     });
 
     conn.on('close', function () {
-        if (status !== null){
-        status.innerHTML = "Connection closed";
-        }
+        status.innerHTML = "Connection closed. Sender Side";
     });
+
+    return conn;
 };
 
 //  Send a signal via the peer connection and add it to the log.
@@ -83,7 +84,7 @@ export function s_signal(sigName: string, message: HTMLElement, conn: DataConnec
         console.log(sigName + " signal sent");
         s_addMessage(cueString + sigName, message);
     } else {
-        console.log('Connection is closed');
+        console.log('Connection is closed. Signal Func Sender');
     }
 };
 

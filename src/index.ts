@@ -27,7 +27,7 @@ s_initialize(send_peer, send_status);
 
 // Start peer connection on click
 
-send_connectButton.addEventListener('click', () => s_join(send_peer, send_recvIdInput,send_status, send_message, send_conn));
+send_connectButton.addEventListener('click', () => {send_conn =s_join(send_peer, send_recvIdInput,send_status, send_message, send_conn)});
 
 // Add click event listener for send_goButton
 send_goButton.addEventListener('click', function () {
@@ -64,7 +64,8 @@ send_sendMessageBox.addEventListener('keydown', function (e) {
 // Add click event listener for send_sendButton
 // Send message
 send_sendButton.addEventListener('click', function () {
-    if (send_conn && send_conn.open) {
+    // console.log(typeof send_conn);
+    if (send_conn.open) {
         var msg = send_sendMessageBox.value;
         send_sendMessageBox.value = "";
         send_conn.send(msg);
@@ -80,17 +81,20 @@ send_clearMsgsButton.addEventListener('click', () => s_clearMessages(send_messag
 
 
 // ######################## Receive ########################
+var recv_peer = new Peer({debug: 2});
 var recv_conn: DataConnection;
-var recv_recvId = document.getElementById("receiver-id") as HTMLElement;
-var recv_status = document.getElementById("status") as HTMLElement;
-var recv_message = document.getElementById("message") as HTMLElement;
-var recv_standbyBox = document.getElementById("standby") as HTMLElement;
-var recv_goBox = document.getElementById("go") as HTMLElement;
-var recv_fadeBox = document.getElementById("fade") as HTMLElement;
-var recv_offBox = document.getElementById("off") as HTMLElement;
-var recv_sendMessageBox = document.getElementById("sendMessageBox") as HTMLInputElement;
-var recv_sendButton = document.getElementById("sendButton") as HTMLElement;
-var recv_clearMsgsButton = document.getElementById("clearMsgsButton") as HTMLElement;
+var recv_recvId = document.getElementById("recv_receiver-id") as HTMLElement;
+var recv_status = document.getElementById("recv_status") as HTMLElement;
+var recv_message = document.getElementById("recv_message") as HTMLElement;
+var recv_standbyBox = document.getElementById("recv_standby") as HTMLElement;
+var recv_goBox = document.getElementById("recv_go") as HTMLElement;
+var recv_fadeBox = document.getElementById("recv_fade") as HTMLElement;
+var recv_offBox = document.getElementById("recv_off") as HTMLElement;
+var recv_sendMessageBox = document.getElementById("recv_sendMessageBox") as HTMLInputElement;
+var recv_sendButton = document.getElementById("recv_sendButton") as HTMLElement;
+var recv_clearMsgsButton = document.getElementById("recv_clearMsgsButton") as HTMLElement;
+
+r_initialize(recv_peer, recv_recvId, recv_status, recv_message, recv_standbyBox, recv_goBox, recv_fadeBox, recv_offBox, (conn) => {recv_conn = conn});
 
 // Listen for enter in message box
 recv_sendMessageBox.addEventListener('keypress', function (e) {
@@ -98,7 +102,7 @@ recv_sendMessageBox.addEventListener('keypress', function (e) {
         recv_sendButton.click();
       }
 });
-// Send message
+// Send from Message Receiver
 recv_sendButton.addEventListener('click', function () {
     if (recv_conn && recv_conn.open) {
         var msg = recv_sendMessageBox.value;
@@ -111,8 +115,7 @@ recv_sendButton.addEventListener('click', function () {
     }
 });
 
+
 // Clear messages box
 recv_clearMsgsButton.addEventListener('click', () =>s_clearMessages(recv_message));
 
-var recv_peer = new Peer();
-r_initialize(recv_peer, recv_recvId, recv_status, recv_message, recv_standbyBox, recv_goBox, recv_fadeBox, recv_offBox);
