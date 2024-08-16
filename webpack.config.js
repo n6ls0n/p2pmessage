@@ -36,19 +36,10 @@ module.exports = {
         }),
     ],
     devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-            publicPath: './',
-        },
-        hot: true,
+        hot: false,
+        liveReload: true,
+        watchFiles: ['src/**/*'],
         host: 'localhost',
-        // server: {
-        //     type: 'https',
-        //     options: {
-        //         key: fs.readFileSync('./localhost-key.pem'),
-        //         cert: fs.readFileSync('./localhost.pem'),
-        //         },
-        // },
         port: 8081,
     },
 };
